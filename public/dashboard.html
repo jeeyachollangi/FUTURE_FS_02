@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Apex CRM</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/dashboard.css">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-accent">Apex</span>CRM
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-item active" data-target="overview"><i class="fas fa-chart-pie"></i> Overview</a>
+        <a href="#" class="menu-item" data-target="leads"><i class="fas fa-users-viewfinder"></i> Manage Leads</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <div class="avatar"><i class="fas fa-user-tie"></i></div>
+          <div class="info">
+            <span class="name">Administrator</span>
+            <span class="role">Admin Role</span>
+          </div>
+        </div>
+        <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="content-header">
+        <div class="header-welcome">
+          <h1>Lead Analytics Overview</h1>
+          <p id="todayDate">June 28, 2026</p>
+        </div>
+        <div class="header-actions">
+          <a href="/" target="_blank" class="btn-secondary-sm"><i class="fas fa-external-link-alt"></i> View Public Site</a>
+        </div>
+      </header>
+
+      <!-- KPI Summary Cards -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="card-icon"><i class="fas fa-folder-open"></i></div>
+          <div class="card-data">
+            <h3>Total Leads</h3>
+            <span class="number" id="kpiTotal">0</span>
+          </div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="card-icon contacted"><i class="fas fa-comments"></i></div>
+          <div class="card-data">
+            <h3>Contacted</h3>
+            <span class="number" id="kpiContacted">0</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="card-icon converted"><i class="fas fa-handshake"></i></div>
+          <div class="card-data">
+            <h3>Converted</h3>
+            <span class="number" id="kpiConverted">0</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="card-icon conversion-rate"><i class="fas fa-chart-line"></i></div>
+          <div class="card-data">
+            <h3>Conversion Rate</h3>
+            <span class="number" id="kpiConversionRate">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics / Charts Row -->
+      <section class="charts-row">
+        <div class="chart-card double-width">
+          <div class="chart-header">
+            <h3>Lead Acquisition Trend (Last 7 Days)</h3>
+          </div>
+          <div class="chart-body">
+            <canvas id="trendChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Leads by Status</h3>
+          </div>
+          <div class="chart-body doughnut">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Leads by Source</h3>
+          </div>
+          <div class="chart-body doughnut">
+            <canvas id="sourceChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Leads Management System -->
+      <section class="leads-section">
+        <div class="section-title-row">
+          <h2>Leads Pipeline</h2>
+          
+          <!-- Filters & Search Toolbar -->
+          <div class="toolbar">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchInput" placeholder="Search by name, email, or company...">
+            </div>
+            
+            <div class="filter-group">
+              <select id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Converted">Converted</option>
+                <option value="Lost">Lost</option>
+              </select>
+              
+              <select id="sourceFilter">
+                <option value="">All Sources</option>
+                <option value="Search Engine">Search Engine</option>
+                <option value="Social Media">Social Media</option>
+                <option value="Referral">Referral</option>
+                <option value="Advertisement">Advertisement</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leads Table -->
+        <div class="table-container">
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th>Lead</th>
+                <th>Company</th>
+                <th>Source</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leadsTableBody">
+              <!-- Dynamically populated rows -->
+              <tr>
+                <td colspan="6" class="loading-cell">
+                  <i class="fas fa-spinner fa-spin"></i> Loading leads...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Lead Detail Modal (Sleek side overlay / backdrop) -->
+  <div id="leadModal" class="modal-backdrop hidden">
+    <div class="modal-container">
+      <header class="modal-header">
+        <div class="modal-title">
+          <h2 id="modalLeadName">Lead Detail</h2>
+          <span id="modalCompanyText" class="company-sub">Acme Corp</span>
+        </div>
+        <button id="closeModalBtn" class="btn-close-modal"><i class="fas fa-times"></i></button>
+      </header>
+
+      <div class="modal-content">
+        <!-- Lead Meta Data Panel -->
+        <div class="meta-section">
+          <h3>Lead Details</h3>
+          <div class="meta-grid">
+            <div class="meta-item">
+              <span class="label">Email</span>
+              <span class="value" id="modalEmail">john@company.com</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Phone</span>
+              <span class="value" id="modalPhone">+1 (555) 123-4567</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Source</span>
+              <span class="value" id="modalSource">Referral</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Submission Date</span>
+              <span class="value" id="modalDate">June 28, 2026, 12:00 PM</span>
+            </div>
+          </div>
+
+          <div class="message-box">
+            <span class="label">User Message</span>
+            <p id="modalMessage">No message provided.</p>
+          </div>
+        </div>
+
+        <!-- Action / Status Controls -->
+        <div class="status-action-section">
+          <h3>Update Lead Status</h3>
+          <div class="status-buttons-row">
+            <button class="btn-status-toggle" data-status="New">New</button>
+            <button class="btn-status-toggle" data-status="Contacted">Contacted</button>
+            <button class="btn-status-toggle" data-status="Converted">Converted</button>
+            <button class="btn-status-toggle" data-status="Lost">Lost</button>
+          </div>
+        </div>
+
+        <!-- Notes / Timeline Section -->
+        <div class="notes-section">
+          <h3>Activity Logs & Follow-up Notes</h3>
+          
+          <!-- Add Note Form -->
+          <form id="addNoteForm" class="add-note-form">
+            <textarea id="noteInput" rows="3" placeholder="Add follow-up notes here (e.g. 'Sent contract proposal by email', 'Scheduled call next Tuesday')..." required></textarea>
+            <button type="submit" class="btn-primary-sm">
+              <span>Save Note</span>
+              <i class="fas fa-plus"></i>
+            </button>
+          </form>
+
+          <!-- Timeline list -->
+          <div class="timeline" id="notesTimeline">
+            <!-- Dynamically populated timeline nodes -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

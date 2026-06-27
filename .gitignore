@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database files
+crm.db
+crm.db-journal
+
+# Environment variables
+.env
+.env.local
+
+# Operating System files
+Thumbs.db
+.DS_Store
