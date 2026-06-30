@@ -25,7 +25,8 @@ An elegant, high-fidelity, and fully responsive Client Lead Management System (M
 - **Frontend**: Vanilla HTML5, Vanilla CSS3 (Custom design systems & glassmorphism), Vanilla JavaScript, Chart.js, FontAwesome.
 - **Backend**: Node.js, Express.js, JSON Web Tokens (`jsonwebtoken`), BCryptJS (`bcryptjs`), CORS.
 - **Database**: SQLite3.
-
+---
+> 🌐 **Live Demo:** [https://future-fs-02-h6oq.onrender.com/](https://future-fs-02-h6oq.onrender.com/)
 ---
 
 ## 📁 Repository Structure
